@@ -23,7 +23,7 @@ describe("Testing basic database functionality", () => {
         const newTask = { description: "Test task" }
         const response = await fetch("http://localhost:3001/create", {
             method: "post",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": token },
             body: JSON.stringify({ task: newTask })
         })
         const data = await response.json()
@@ -34,7 +34,8 @@ describe("Testing basic database functionality", () => {
 
     it("should delete task", async () => {
         const response = await fetch("http://localhost:3001/delete/1", {
-            method: "delete"
+            method: "delete",
+            headers: { "Authorization": token }
         })
         const data = await response.json()
         expect(response.status).to.equal(200)
@@ -44,7 +45,7 @@ describe("Testing basic database functionality", () => {
     it("should not create a new task without description", async () => {
         const response = await fetch("http://localhost:3001/create", {
             method: "post",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": token },
             body: JSON.stringify({ task: null })
         })
         const data = await response.json()
@@ -82,6 +83,6 @@ describe("Testing user management", () => {
         const data = await response.json()
         expect(response.status).to.equal(200)
         expect(data).to.include.all.keys(["id", "email", "token"])
-        exp
+        expect(data.email).to.equal(user.email)
     })
 })

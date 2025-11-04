@@ -29,7 +29,7 @@ router.post('/create', auth, (req, res, next) => {
         })
 })
 
-router.delete('/delete/:id', (req, res, next) => {
+router.delete('/delete/:id', auth, (req, res, next) => {
     const { id } = req.params
     
     pool.query('delete from task WHERE id = $1',
